@@ -37,8 +37,7 @@ bool IOCP::Init(std::function<bool (LPOVERLAPPED, DWORD)>&& callback) {
   auto thread_num = utility::GetProcessorNum() * 2;
   auto thread_proc = std::bind(&IOCP::ThreadWorker, this);
   for (auto i = 0; i < thread_num; ++i) {
-    std::unique_ptr<std::thread> new_thread(new std::thread(thread_proc));
-    iocp_thread_.push_back(std::move(new_thread));
+    iocp_thread_.push_back(std::make_unique<std::thread>(thread_proc));
   }
   return true;
 }

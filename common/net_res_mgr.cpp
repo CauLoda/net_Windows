@@ -53,7 +53,12 @@ bool NetResMgr::TcpCreate(const std::weak_ptr<NetInterface>& callback, const std
     LOG(kError, "create tcp handle failed: invalid callback parameter.");
     return false;
   }
-  std::shared_ptr<TcpSocket> new_socket(new TcpSocket);
+  auto new_socket = std::make_shared<TcpSocket>();
+  if (!new_socket)
+  {
+    LOG(kError, "create tcp handle failed: not enough memory.");
+    return false;
+  }
   if (!new_socket->Create(callback)) {
     return false;
   }
@@ -202,7 +207,12 @@ bool NetResMgr::UdpCreate(const std::weak_ptr<NetInterface>& callback, const std
     LOG(kError, "create udp handle failed: invalid callback parameter.");
     return false;
   }
-  std::shared_ptr<UdpSocket> new_socket(new UdpSocket);
+  auto new_socket = std::make_shared<UdpSocket>();
+  if (!new_socket)
+  {
+    LOG(kError, "create udp handle failed: not enough memory.");
+    return false;
+  }
   if (!new_socket->Create(callback)) {
     return false;
   }
